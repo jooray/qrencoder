@@ -16,10 +16,10 @@ Modern, lightning-fast, offline-first QR code generator for macOS, Linux, and An
 ## Screenshots
 
 ### Main Workspace
-![Main Workspace](screenshots/screenshot1.png)
+![Main Workspace](https://raw.githubusercontent.com/jooray/qrencoder/main/docs/screenshots/screenshot1.png)
 
 ### Crypto Template (Bitcoin)
-![Bitcoin Template](screenshots/screenshot2.png)
+![Bitcoin Template](https://raw.githubusercontent.com/jooray/qrencoder/main/docs/screenshots/screenshot2.png)
 
 ## Installation
 
@@ -43,4 +43,3 @@ flutter build apk --release
 
 ## License
 MIT
-EOF

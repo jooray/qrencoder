@@ -87,7 +87,9 @@ class ExportActions extends StatelessWidget {
       final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
       final pngBytes = byteData!.buffer.asUint8List();
 
-      // Fallback to plain text payload or notification on mobile/desktop since standard clipboard doesn't take raw PNG bytes across all targets without platform extensions
+      // Clipboard support using Clipboard.setData for text, or super_clipboard if we were to re-integrate.
+      // Since standard Clipboard can't hold images directly on all platforms, we'll offer to save to file for image usage.
+      // For now, let's just copy the text.
       await Clipboard.setData(ClipboardData(text: payload));
 
       if (context.mounted) {
@@ -117,8 +119,9 @@ class ExportActions extends StatelessWidget {
       final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
       final pngBytes = byteData!.buffer.asUint8List();
 
-      final tempDir = await getTemporaryDirectory();
-      final filePath = '${tempDir.path}/qrcode.png';
+      // Using applicationDocumentsDirectory instead of temporaryDirectory for better stability
+      final directory = await getApplicationDocumentsDirectory();
+      final filePath = '${directory.path}/qrcode.png';
       final file = File(filePath);
       await file.writeAsBytes(pngBytes);
 
@@ -149,8 +152,8 @@ class ExportActions extends StatelessWidget {
       final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
       final pngBytes = byteData!.buffer.asUint8List();
 
-      final tempDir = await getTemporaryDirectory();
-      final file = await File('${tempDir.path}/qrcode.png').writeAsBytes(pngBytes);
+      final directory = await getApplicationDocumentsDirectory();
+      final file = await File('${directory.path}/qrcode.png').writeAsBytes(pngBytes);
 
       await Share.shareXFiles(
         [XFile(file.path)],
