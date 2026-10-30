@@ -1,9 +1,13 @@
 import 'dart:ui' as ui;
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/services.dart' show Clipboard, ClipboardData;
+import 'package:file_picker/file_picker.dart';
+import 'package:super_clipboard/super_clipboard.dart';
+import 'dart:io';
+
 import 'package:share_plus/share_plus.dart';
 import 'package:path_provider/path_provider.dart';
-import 'dart:io';
 
 import 'qr_preview.dart';
 
@@ -87,21 +91,40 @@ class ExportActions extends StatelessWidget {
       final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
       final pngBytes = byteData!.buffer.asUint8List();
 
-      // Clipboard support using Clipboard.setData for text, or super_clipboard if we were to re-integrate.
-      // Since standard Clipboard can't hold images directly on all platforms, we'll offer to save to file for image usage.
-      // For now, let's just copy the text.
-      await Clipboard.setData(ClipboardData(text: payload));
+      // Use super_clipboard to copy the actual image to clipboard
+      // Note: Web doesn't support copying image data directly
+      if (!kIsWeb) {
+        final item = DataWriterItem(suggestedName: 'qrcode.png');
+        item.add(Formats.png(pngBytes));
+        await ClipboardWriter.instance.write([item]);
 
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('QR payload copied to clipboard')),
-        );
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('QR code image copied to clipboard')),
+          );
+        }
+      } else {
+        // Web fallback: copy as text
+        await Clipboard.setData(const ClipboardData(text: 'QR code image - paste into image editor'));
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Image copy not supported on web')),
+          );
+        }
       }
     } catch (e) {
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Clipboard copy failed: $e')),
-        );
+        // Fallback to text payload
+        try {
+          await Clipboard.setData(ClipboardData(text: payload));
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('QR payload copied to clipboard')),
+          );
+        } catch (e2) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Clipboard copy failed: $e')),
+          );
+        }
       }
     }
   }
@@ -119,16 +142,23 @@ class ExportActions extends StatelessWidget {
       final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
       final pngBytes = byteData!.buffer.asUint8List();
 
-      // Using applicationDocumentsDirectory instead of temporaryDirectory for better stability
-      final directory = await getApplicationDocumentsDirectory();
-      final filePath = '${directory.path}/qrcode.png';
-      final file = File(filePath);
-      await file.writeAsBytes(pngBytes);
+      // Use file_picker to show a native "Save As" dialog
+      final savedUri = await FilePicker.saveFile(
+        dialogTitle: 'Save QR Code as PNG',
+        fileName: 'qrcode.png',
+        bytes: pngBytes,
+      );
 
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('PNG saved to $filePath')),
-        );
+        if (savedUri != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('PNG saved to ${savedUri.toString()}')),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Save cancelled')),
+          );
+        }
       }
     } catch (e) {
       if (context.mounted) {

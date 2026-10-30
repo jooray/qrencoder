@@ -477,7 +477,23 @@ class _QrHomeScreenState extends State<QrHomeScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Scale (px/module):', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Flexible(
+                        child: Text(
+                          'Scale (px/module):',
+                          style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      const SizedBox(width: 4),
+                      Tooltip(
+                        message: 'Affects export resolution only, not on-screen preview',
+                        child: Icon(Icons.info_outline, size: 14, color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.6)),
+                      ),
+                    ],
+                  ),
                   const SizedBox(height: 4),
                   DropdownButtonFormField<double>(
                     isExpanded: true,
