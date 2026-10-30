@@ -1,0 +1,15 @@
+repository: https://github.com/jooray/qrencoder
+metadata_sources:
+  - github
+pubkey: npub1qrencoderdummy
+summary: "Modern, lightning-fast, offline-first QR code generator for macOS, Linux, and Android."
+description: |
+  QREncoder provides instant, privacy-respecting, zero-click QR code generation for
+  text, URLs, Wi-Fi credentials, contacts, email, geo, and crypto/lightning payments.
+  Success means zero delay between intent and a scannable symbol.
+tags:
+  - qr
+  - crypto
+  - offline
+license: MIT
+website: https://jooray.github.io/qrencoder/
