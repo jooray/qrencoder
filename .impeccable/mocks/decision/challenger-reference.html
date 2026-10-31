@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>QREncoder — The Reference Setting</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bone:#ece5d6;--iron:#1b1a16;--rubric:#a8291c}
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:1440px;height:900px;overflow:hidden;background:var(--bone);color:var(--iron);
+  font-family:Archivo,system-ui,sans-serif}
+.sheet{height:100%;display:flex;flex-direction:column;padding:0 34px}
+.top{display:flex;justify-content:space-between;align-items:baseline;
+  height:66px;border-bottom:1px solid var(--iron)}
+.brand{font-size:15px;font-weight:600;letter-spacing:.3em;text-transform:uppercase}
+.brand em{font-style:normal;color:var(--rubric)}
+.nav{display:flex;gap:2px}
+.nav a{font-size:10px;letter-spacing:.2em;text-transform:uppercase;text-decoration:none;
+  color:var(--iron);padding:6px 0 6px 18px;border-left:1px solid rgba(27,26,22,.3)}
+.nav a.on{color:var(--rubric);border-left:2px solid var(--rubric)}
+main{flex:1;display:grid;grid-template-columns:392px 76px 1fr;padding-top:0}
+.col{padding:22px 26px 22px 0;border-right:1px solid var(--iron)}
+.hd{font-size:9px;letter-spacing:.32em;text-transform:uppercase;color:var(--rubric);margin-bottom:16px}
+.f{padding:12px 0;border-bottom:1px solid rgba(27,26,22,.28)}
+.f label{display:block;font-size:9px;letter-spacing:.28em;text-transform:uppercase;
+  color:rgba(27,26,22,.65);margin-bottom:5px}
+.f .v{font-size:15px}
+.f .v.mono{font-family:"Courier Prime",monospace;font-size:15px}
+.f .v .caret{display:inline-block;width:1px;height:17px;background:var(--rubric);
+  vertical-align:-3px;margin-left:1px}
+.rail{border-right:1px solid var(--iron);padding:22px 0;display:flex;flex-direction:column;
+  align-items:center;gap:0}
+.rail .k{font-size:8px;letter-spacing:.24em;text-transform:uppercase;color:rgba(27,26,22,.55);
+  margin-bottom:10px}
+.key{width:44px;height:38px;border:1px solid var(--iron);display:grid;place-items:center;
+  font-size:15px;font-weight:600;margin-bottom:6px;background:transparent;color:var(--iron)}
+.key.on{background:var(--rubric);border-color:var(--rubric);color:var(--bone)}
+.key.dim{border-style:dashed;color:rgba(27,26,22,.4);border-color:rgba(27,26,22,.4)}
+.rail .div{width:1px;height:22px;background:rgba(27,26,22,.35);margin:10px 0}
+.rail .lbl{font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:rgba(27,26,22,.55);
+  margin:12px 0 8px}
+.sw{width:40px;height:26px;border:1px solid var(--iron);margin-bottom:7px;display:block}
+.right{padding:22px 0 22px 30px;display:grid;grid-template-columns:1fr 210px;gap:0}
+.plateWrap{display:flex;flex-direction:column}
+.plate{background:#fff;border:1px solid var(--iron);padding:16px;align-self:flex-start;position:relative}
+.plate::after{content:"";position:absolute;left:0;right:0;bottom:-7px;height:1px;background:var(--iron)}
+.qr{position:relative;width:392px;height:392px;border:13px solid #fff;
+  background:repeating-conic-gradient(var(--iron) 0 25%,#fff 0 50%) 0 0/13px 13px}
+.fnd{position:absolute;width:91px;height:91px;background:var(--iron);padding:13px}
+.fnd i{display:block;width:65px;height:65px;background:#fff;padding:13px}
+.fnd b{display:block;width:39px;height:39px;background:var(--iron)}
+.fnd.tl{top:0;left:0}.fnd.tr{top:0;right:0}.fnd.bl{bottom:0;left:0}
+.fig{font-size:9px;letter-spacing:.26em;text-transform:uppercase;margin-top:18px;
+  color:rgba(27,26,22,.7)}
+.fig b{color:var(--iron)}
+.margin{padding-left:26px;border-left:1px solid rgba(27,26,22,.35);display:flex;flex-direction:column}
+.margin h6{font-size:8px;letter-spacing:.3em;text-transform:uppercase;color:var(--rubric);
+  margin-bottom:14px}
+.anno{display:flex;justify-content:space-between;align-items:baseline;
+  border-bottom:1px solid rgba(27,26,22,.22);padding:9px 0}
+.anno span{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(27,26,22,.62)}
+.anno b{font-family:"Courier Prime",monospace;font-size:12px}
+.detent{margin-top:auto;padding:14px 0 0;border-top:1px solid var(--iron);
+  font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(27,26,22,.65);line-height:2}
+.detent i{display:inline-block;width:14px;height:8px;border:1px solid var(--iron);margin-right:7px}
+.detent i.d{background:var(--iron)}.detent i.b{border-style:dashed}
+.foot{height:58px;border-top:1px solid var(--iron);display:flex;justify-content:space-between;
+  align-items:center;margin-top:auto}
+.payload{font-family:"Courier Prime",monospace;font-size:11px;letter-spacing:.02em;
+  color:rgba(27,26,22,.8);max-width:640px;white-space:nowrap;overflow:hidden}
+.btns{display:flex;gap:0}
+.btns a{font-size:9px;letter-spacing:.22em;text-transform:uppercase;text-decoration:none;
+  color:var(--iron);padding:8px 16px;border:1px solid var(--iron);margin-left:-1px}
+.btns a.pri{background:var(--iron);color:var(--bone)}
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="top">
+    <div class="brand">QREncoder <em>·</em> reference</div>
+    <nav class="nav"><a class="on">Wi-Fi</a><a>Bitcoin</a><a>Lightning</a><a>vCard</a><a>URL</a><a>Text</a></nav>
+  </div>
+  <main>
+    <section class="col">
+      <div class="hd">Bearer · template 03 / 14</div>
+      <div class="f"><label>Network name</label><div class="v">Cafe-Werkstatt-5G</div></div>
+      <div class="f"><label>Security</label><div class="v">WPA2 / WPA3</div></div>
+      <div class="f"><label>Password</label><div class="v mono">mulligan-18-river<span class="caret"></span></div></div>
+      <div class="f"><label>Hidden network</label><div class="v">no</div></div>
+      <div class="f"><label>Raw record</label><div class="v mono" style="font-size:11px;line-height:1.6">WIFI:T:WPA2;S:Cafe-Werkstatt-5G;<br>P:mulligan-18-river;H:false;;</div></div>
+    </section>
+    <section class="rail">
+      <div class="k">EC</div>
+      <div class="key">L</div><div class="key">M</div><div class="key on">Q</div><div class="key">H</div>
+      <div class="div"></div>
+      <div class="lbl">Scale</div>
+      <div class="key dim">4</div><div class="key">8</div><div class="key dim">16</div>
+      <div class="div"></div>
+      <div class="lbl">Ink</div>
+      <span class="sw" style="background:#1b1a16"></span>
+      <span class="sw" style="background:#fff"></span>
+    </section>
+    <section class="right">
+      <div class="plateWrap">
+        <div class="plate">
+          <div class="qr">
+            <div class="fnd tl"><i><b></b></i></div>
+            <div class="fnd tr"><i><b></b></i></div>
+            <div class="fnd bl"><i><b></b></i></div>
+          </div>
+        </div>
+        <div class="fig"><b>Fig. 1</b> — Wi-Fi, error correction Q, 37 × 37 modules</div>
+      </div>
+      <aside class="margin">
+        <h6>Apparatus</h6>
+        <div class="anno"><span>Modules</span><b>37 × 37</b></div>
+        <div class="anno"><span>Quiet zone</span><b>4 mod</b></div>
+        <div class="anno"><span>Contrast</span><b>21:1</b></div>
+        <div class="anno"><span>Export</span><b>8 px/mod</b></div>
+        <div class="anno"><span>Version</span><b>5</b></div>
+        <div class="detent">
+          <i class="d"></i>selected<br>
+          <i></i>bracketed on focus<br>
+          <i class="b"></i>unavailable
+        </div>
+      </aside>
+    </section>
+  </main>
+  <div class="foot">
+    <div class="payload">WIFI:T:WPA2;S:Cafe-Werkstatt-5G;P:mulligan-18-river;H:false;; &nbsp;·&nbsp; 52 chars</div>
+    <div class="btns"><a class="pri">Copy image</a><a>Save PNG</a><a>Share</a></div>
+  </div>
+</div>
+</body>
+</html>

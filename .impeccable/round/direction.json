@@ -1,0 +1,162 @@
+{
+  "title": "Choose the visual world",
+  "question": "The roll assigned The 80-Column Record. Keep it, take an alternate, or re-roll.",
+  "options": [
+    {
+      "id": "assigned",
+      "kind": "assigned",
+      "label": "The 80-Column Record",
+      "kicker": "THE ROLL",
+      "lineage": "Hollerith punched-card data records",
+      "thesis": "Every payload is a card: fixed columns, punched data, one machine-readable record.",
+      "palette": ["#d9c49b", "#f7f2e5", "#17150f", "#b3261e", "#2b3a4a"],
+      "materials": ["card stock", "punched holes", "rubber-stamp red"],
+      "viewport": "Fields on manila, the encoded string as a column-numbered card, the symbol on an ivory plate with its measurements in the margin.",
+      "risk": "Retro-computing costume if the card decorates instead of carrying the payload's own column structure.",
+      "raised": [
+        {
+          "from": "challenger-transit",
+          "raise": "Line-emphasis: the selected content type is the only saturated element on the sheet; everything else sits in ink."
+        },
+        {
+          "from": "challenger-timetable",
+          "raise": "Single-size discipline: no second type size carries rank; weight, case and hairlines do."
+        },
+        {
+          "from": "challenger-datamatics",
+          "raise": "Margin numerics: module count, EC level, contrast and scale sit as tabular figures in a labelled margin, never floating."
+        },
+        {
+          "from": "challenger-jcard",
+          "raise": "Hard halves: one continuous printed rule divides fields from result; no floating cards, no shadows."
+        }
+      ],
+      "comp": ".impeccable/mocks/decision/assigned.webp",
+      "html": ".impeccable/mocks/decision/assigned.html"
+    },
+    {
+      "id": "pick",
+      "kind": "pick",
+      "label": "The Intaglio Note",
+      "kicker": "IMPECCABLE’S PICK",
+      "lineage": "security-printed banknotes and paper wallets",
+      "thesis": "The export is a note: engraved frame, serial in the margin, the symbol as the portrait.",
+      "palette": ["#efe7d6", "#0e4b3a", "#14140f", "#a3251c", "#b08a3e"],
+      "materials": ["intaglio line-work", "rag paper", "serial numbering"],
+      "viewport": "A note-shaped sheet divided by an engraved frame: fields at left, the symbol centred inside its engraved border, serial line beneath.",
+      "risk": "The direction most runs in this category land on, and ornament near the quiet zone can cost a scan.",
+      "comp": ".impeccable/mocks/decision/pick.webp",
+      "html": ".impeccable/mocks/decision/pick.html"
+    },
+    {
+      "id": "challenger-bitmap",
+      "kind": "challenger",
+      "catalogId": "emigre-bitmap-specimen",
+      "label": "The Bitmap Specimen",
+      "verdict": "competitive",
+      "lineage": "Emigre bitmap type specimens",
+      "thesis": "The symbol is a bitmap, and the tool is honest about every pixel of it.",
+      "palette": ["#f5f3ee", "#111110", "#d8ff3e"],
+      "materials": ["newsprint", "dot-matrix", "whole-pixel type"],
+      "viewport": "The symbol at 1:1 with its module grid exposed, an integer scale ladder beneath it, display type set at whole-pixel multiples.",
+      "risk": "Holds the product's pixel truth and loses audience identification; can read as a type-specimen exercise.",
+      "case": "Fuses cleanly: module scale is an integer multiple, so the world's whole-pixel rule is the product's own rule. Loses on audience identification, not on clarity.",
+      "comp": ".impeccable/mocks/decision/challenger-bitmap.webp",
+      "html": ".impeccable/mocks/decision/challenger-bitmap.html"
+    },
+    {
+      "id": "challenger-reference",
+      "kind": "challenger",
+      "catalogId": "rw-centre-rail-reference-setting",
+      "label": "The Reference Setting",
+      "verdict": "competitive",
+      "lineage": "wide-margin reference editions with a centre key rail",
+      "thesis": "A reference edition at work: fields in one column, the parameter rail between them and the plate, states printed as marks.",
+      "palette": ["#ece5d6", "#1b1a16", "#a8291c"],
+      "materials": ["bone stock", "hairline rules", "rubric keys"],
+      "viewport": "Two columns twinned around a narrow vermilion key rail, the symbol held in a measured block at right, apparatus in the wide margin.",
+      "risk": "The most disciplined option and the least warm; a working tool that reads like a printed page needs strict component discipline or it goes stiff.",
+      "case": "Fuses cleanly: the parameter rail is a real editor topology, and printed-mark states map to focus, selected and disabled. Narrowly behind on product clarity because field entry is not a page.",
+      "comp": ".impeccable/mocks/decision/challenger-reference.webp",
+      "html": ".impeccable/mocks/decision/challenger-reference.html"
+    },
+    {
+      "id": "challenger-transit",
+      "kind": "challenger",
+      "catalogId": "wayfinding-cartography-signage-midnight-transit-diagram",
+      "label": "The Midnight Diagram",
+      "verdict": "declined",
+      "lineage": "metropolitan transit diagrams",
+      "thesis": "Content types as lines, their field chains as stations, the chosen route burning bright.",
+      "palette": ["#12172b", "#f4f1e8", "#d43a2f", "#2f6fd0", "#e0a52b"],
+      "materials": ["enamel signage", "porcelain ticks"],
+      "viewport": "A midnight-blue sheet where fourteen content types run as coloured lines into one interchange.",
+      "risk": "Bends the payload into a route map the user never asked to read.",
+      "case": "Fuses poorly: fourteen templates are not a network, and the metaphor obscures what is being encoded.",
+      "kept": "Emphasis by saturation: one active route in colour, everything else in ink.",
+      "comp": ".impeccable/mocks/decision/canon.webp"
+    },
+    {
+      "id": "challenger-timetable",
+      "kind": "challenger",
+      "catalogId": "rw-timetable-slide-rack",
+      "label": "The Slide Rack",
+      "verdict": "declined",
+      "lineage": "1971 pocket airline timetables on a light table",
+      "thesis": "One size of type, rank carried by weight and reversal, containers raked on a goldenrod bed.",
+      "palette": ["#d8b23f", "#3d4a52", "#f6efdc", "#b8462c", "#1f4a33"],
+      "materials": ["tinted acetate", "goldenrod stock", "cut rule"],
+      "viewport": "A raked rack of tinted panes over a lit bed, every column set at one size.",
+      "risk": "Raking and reversal fight a form that must be typed into.",
+      "case": "Fuses poorly: the rack is a reading surface, not an editor.",
+      "kept": "Single-size discipline: rank from weight, case and rule, never from another type size.",
+      "comp": ".impeccable/mocks/decision/canon.webp"
+    },
+    {
+      "id": "challenger-jcard",
+      "kind": "challenger",
+      "catalogId": "vernacular-ephemera-cassette-j-card",
+      "label": "The J-Card",
+      "verdict": "declined",
+      "lineage": "hand-lettered cassette inlays",
+      "thesis": "Two hard halves, side A and side B, ruled in ballpoint and timed to the second.",
+      "palette": ["#f7f5ef", "#1e3f8f", "#8c8c8c", "#c8342b"],
+      "materials": ["ballpoint", "lined inlay stock", "brand stripe"],
+      "viewport": "A folded inlay laid flat, fields down one half, the symbol on the other, running times hard against the margin.",
+      "risk": "Handwriting in a tool whose whole promise is exactness.",
+      "case": "Fuses poorly: the warmth is real, the precision is not.",
+      "kept": "Hard halves: one unbroken rule splits the sheet, never a floating card.",
+      "comp": ".impeccable/mocks/decision/canon.webp"
+    },
+    {
+      "id": "challenger-datamatics",
+      "kind": "challenger",
+      "catalogId": "ikeda-datamatics",
+      "label": "The Data Field",
+      "verdict": "declined",
+      "lineage": "data-sublime barcode fields",
+      "thesis": "Pure black and white bar-fields with tabular numerics packing the margin.",
+      "palette": ["#ffffff", "#000000"],
+      "materials": ["hairline bars", "monospace numerics"],
+      "viewport": "A wall of hairline vertical bars with dense labelled numbers to the edge.",
+      "risk": "Its signature move is a full-frame inversion, and this product may never invert the symbol.",
+      "case": "Fuses badly on truth: the world's one memorable gesture contradicts the quiet-zone and no-invert commitments.",
+      "kept": "Margin numerics: measurements as labelled tabular figures, never floating chips.",
+      "comp": ".impeccable/mocks/decision/canon.webp"
+    }
+  ],
+  "reroll": { "registers": ["safer", "bolder"] },
+  "buildPath": { "value": "code", "toggle": true },
+  "canon": true,
+  "canonCard": {
+    "kind": "canon",
+    "label": "The category standard",
+    "thesis": "What this category ships, executed impeccably.",
+    "palette": ["#ffffff", "#111827", "#2563eb"],
+    "materials": ["clean grid", "rounded cards"],
+    "viewport": "The form-left, symbol-right arrangement every competitor already ships.",
+    "risk": "Indistinguishable from the competition by design.",
+    "comp": ".impeccable/mocks/decision/canon.webp"
+  },
+  "steer": true
+}

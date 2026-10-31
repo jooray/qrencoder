@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>QREncoder — The Intaglio Note</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#efe7d6;--green:#0e4b3a;--ink:#14140f;--serial:#a3251c;--gold:#b08a3e}
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:1440px;height:900px;overflow:hidden;background:var(--green);display:grid;place-items:center;
+  font-family:Archivo,system-ui,sans-serif}
+.note{position:relative;width:1352px;height:832px;background:var(--paper);padding:20px;
+  box-shadow:0 0 0 1px rgba(0,0,0,.25)}
+.note::before{content:"";position:absolute;inset:20px;border:3px solid var(--green)}
+.note::after{content:"";position:absolute;inset:28px;border:1px solid var(--gold)}
+.guilloche{position:absolute;inset:32px;pointer-events:none;opacity:.5;
+  background:repeating-linear-gradient(90deg,var(--gold) 0 1px,transparent 1px 5px);
+  mask-image:linear-gradient(90deg,#000,transparent 12%,transparent 88%,#000)}
+.inner{position:relative;z-index:2;height:100%;padding:26px 34px 22px;display:flex;flex-direction:column}
+.top{display:flex;justify-content:space-between;align-items:flex-start;
+  border-bottom:1px solid rgba(20,20,15,.35);padding-bottom:14px}
+.brand{font-size:32px;font-weight:700;letter-spacing:.26em;color:var(--green)}
+.brand em{display:block;font-style:normal;font-size:10px;letter-spacing:.34em;
+  color:var(--serial);margin-top:5px}
+.denom{text-align:right;line-height:1.1}
+.denom b{display:block;font-size:41px;font-weight:700;color:var(--green);letter-spacing:.04em}
+.denom span{font-size:10px;letter-spacing:.3em;color:rgba(20,20,15,.65)}
+.body{display:grid;grid-template-columns:1fr 1.05fr;gap:44px;padding-top:22px;flex:1}
+.col h4{font-size:10px;letter-spacing:.26em;color:var(--serial);text-transform:uppercase;
+  border-bottom:1px solid rgba(20,20,15,.4);padding-bottom:6px;margin-bottom:4px}
+.row{display:flex;justify-content:space-between;align-items:baseline;gap:18px;
+  padding:11px 0;border-bottom:1px solid rgba(20,20,15,.2)}
+.row span{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:rgba(20,20,15,.6)}
+.row b{font-family:"Courier Prime",monospace;font-size:15px;font-weight:400}
+.row b.s{color:var(--serial)}
+.legend{display:flex;gap:16px;margin-top:16px;font-size:10px;letter-spacing:.18em;
+  text-transform:uppercase;color:rgba(20,20,15,.65)}
+.legend i{display:inline-block;width:9px;height:9px;margin-right:6px;vertical-align:-1px}
+.sym{display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative}
+.frame{border:1.5px solid var(--green);padding:12px;background:#fff;position:relative}
+.frame::before{content:"";position:absolute;inset:5px;border:1px solid var(--gold)}
+.qr{position:relative;width:336px;height:336px;border:12px solid #fff;
+  background:repeating-conic-gradient(var(--ink) 0 25%,#fff 0 50%) 0 0/12px 12px}
+.fnd{position:absolute;width:84px;height:84px;background:var(--ink);padding:12px}
+.fnd i{display:block;width:60px;height:60px;background:#fff;padding:12px}
+.fnd b{display:block;width:36px;height:36px;background:var(--ink)}
+.fnd.tl{top:0;left:0}.fnd.tr{top:0;right:0}.fnd.bl{bottom:0;left:0}
+.serial{margin-top:14px;display:flex;gap:12px;align-items:baseline;
+  border-top:1px solid rgba(20,20,15,.35);padding-top:9px;width:100%;justify-content:center}
+.serial span{font-size:9px;letter-spacing:.3em;color:rgba(20,20,15,.6);text-transform:uppercase}
+.serial b{font-family:"Courier Prime",monospace;font-size:13px;color:var(--serial);letter-spacing:.14em}
+.foot{display:flex;justify-content:space-between;align-items:center;
+  border-top:1px solid rgba(20,20,15,.35);margin-top:16px;padding-top:12px;
+  font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:rgba(20,20,15,.7)}
+.btns{display:flex;gap:9px}
+.btns a{text-decoration:none;color:var(--paper);background:var(--green);padding:8px 15px;
+  font-size:10px;letter-spacing:.22em;text-transform:uppercase}
+.btns a.alt{background:transparent;color:var(--green);border:1px solid var(--green)}
+</style>
+</head>
+<body>
+<div class="note">
+  <div class="guilloche"></div>
+  <div class="inner">
+    <div class="top">
+      <div class="brand">QRENCODER<em>Cross-platform · series 2026</em></div>
+      <div class="denom"><b>Q</b><span>Error correction · 25%</span></div>
+    </div>
+    <div class="body">
+      <div class="col">
+        <h4>Bearer · type Wi-Fi</h4>
+        <div class="row"><span>Network</span><b>Cafe-Werkstatt-5G</b></div>
+        <div class="row"><span>Security</span><b>WPA2 / WPA3</b></div>
+        <div class="row"><span>Password</span><b class="s">mulligan-18-river</b></div>
+        <div class="row"><span>Hidden</span><b>no</b></div>
+        <div class="row"><span>Modules</span><b>37 × 37</b></div>
+        <div class="row"><span>Quiet zone</span><b>4 modules</b></div>
+        <div class="legend">
+          <span><i style="background:#14140f"></i>Foreground</span>
+          <span><i style="background:#fff;border:1px solid #14140f"></i>Background</span>
+          <span><i style="background:#a3251c"></i>Warning</span>
+        </div>
+      </div>
+      <div class="sym">
+        <div class="frame">
+          <div class="qr">
+            <div class="fnd tl"><i><b></b></i></div>
+            <div class="fnd tr"><i><b></b></i></div>
+            <div class="fnd bl"><i><b></b></i></div>
+          </div>
+        </div>
+        <div class="serial"><span>Serial</span><b>WIFI:T:WPA2;S:CAFE-WERKSTATT-5G;P:…</b></div>
+      </div>
+    </div>
+    <div class="foot">
+      <span>Nothing leaves this machine</span>
+      <div class="btns"><a>Copy image</a><a class="alt">Save PNG</a><a class="alt">Share</a></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

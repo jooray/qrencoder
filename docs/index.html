@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QREncoder — every module a whole pixel</title>
+<meta name="description" content="A local-only QR generator for macOS, Linux and Android. Live redraw on every keystroke, three symbol styles, integer module scale, and nothing sent anywhere.">
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+</head>
+<body>
+
+<header class="top">
+  <a class="brand" href="./">QRENCODER</a>
+  <nav aria-label="Sections">
+    <a href="#styles">Styles</a>
+    <a href="#payloads">Payloads</a>
+    <a href="#pixels">Pixels</a>
+    <a href="#screens">Screens</a>
+    <a href="#privacy">Privacy</a>
+    <a href="#build">Build</a>
+  </nav>
+</header>
+
+<main>
+
+<section class="hero">
+  <div class="hero-copy">
+    <h1>Every module<br>a whole pixel.</h1>
+    <p class="lede">A local-only QR generator for macOS, Linux and Android. Type or paste, or compose a Wi-Fi record, a vCard, a BIP 21 URI — the symbol is already there, with no Generate button and no network call.</p>
+    <div class="actions">
+      <a class="btn" href="https://github.com/jooray/qrencoder/releases">Download</a>
+      <a class="btn ghost" href="#styles">Three styles</a>
+    </div>
+  </div>
+  <figure class="shot">
+    <img src="img/editor.png" width="1440" height="900" loading="eager"
+         alt="QREncoder’s editor: the payload type TEXT at the top left with a Change key, a payload field, error correction, ink and style controls, the encoded symbol on a white plate in the centre, and modules, contrast, export size and scale in the right margin.">
+    <figcaption><span>Fig. 1</span> A Wi-Fi string typed as text, at error correction Q — 41 × 41 modules, 392 px export.</figcaption>
+  </figure>
+</section>
+
+<section class="specs" aria-label="At a glance">
+  <div class="spec"><b>14</b><span>PAYLOADS, TYPED NOT PASTED</span></div>
+  <div class="spec"><b>3</b><span>SYMBOL STYLES</span></div>
+  <div class="spec"><b>0</b><span>NETWORK CALLS AT RUNTIME</span></div>
+  <div class="spec"><b>4</b><span>MODULE QUIET ZONE, IN EVERY EXPORT</span></div>
+</section>
+
+<section id="styles" class="styles">
+  <h2 class="section-title">One matrix, three hands</h2>
+  <p class="section-intro">The same encoded data, drawn three ways. Preview, style chip and exported PNG all come from one painting routine, so a style cannot look one way on screen and another in the file.</p>
+
+  <ol class="style-grid">
+    <li>
+      <figure>
+        <img src="img/style-default.png" width="400" height="400" loading="lazy"
+             alt="The default style: near-black square modules separated by a hairline white gap, with square finder eyes.">
+        <figcaption><span>Fig. 2</span> Default</figcaption>
+      </figure>
+      <h3>Default</h3>
+      <p>A hairline gap opens between modules from 8 px up, so the symbol reads as tiles laid on a grid.</p>
+    </li>
+    <li>
+      <figure>
+        <img src="img/style-standard.png" width="400" height="400" loading="lazy"
+             alt="The standard style: plain near-black square modules butted edge to edge, with no gap between them.">
+        <figcaption><span>Fig. 3</span> Standard</figcaption>
+      </figure>
+      <h3>Standard</h3>
+      <p>Squares, edge to edge, with nothing between them. The flattest and highest-contrast of the three.</p>
+    </li>
+    <li>
+      <figure>
+        <img src="img/style-liquid.png" width="400" height="400" loading="lazy"
+             alt="The liquid style: neighbouring modules merged into rounded blobs, isolated modules drawn as dots, and the three finder eyes as rounded rings around rounded cores.">
+        <figcaption><span>Fig. 4</span> Liquid</figcaption>
+      </figure>
+      <h3>Liquid</h3>
+      <p>Modules merge along shared edges, singletons become dots, and the three finder eyes stay unmistakably eyes.</p>
+    </li>
+  </ol>
+
+  <p class="style-note">Every style exports at a whole-pixel module scale, quiet zone intact.</p>
+</section>
+
+<section id="pixels" class="pixels">
+  <div class="pixels-copy">
+    <h2 class="section-title light">Why whole pixels</h2>
+    <p class="big">A QR code is a bitmap, not a picture.</p>
+    <p>Scale it by 1.37 and every edge blurs; the scanner has to guess where a module ends. QREncoder only ever multiplies — a module is 8 px wide or 16, never 11.4. The grid you see in the preview is the grid that ships.</p>
+    <p class="mono-note">EXPORT = (MODULES + 8) × SCALE</p>
+  </div>
+  <figure class="grid-fig">
+    <img src="img/grid.png" width="400" height="400" loading="lazy"
+         alt="A detail crop of the default symbol: the top-left finder eye and neighbouring data modules, with a hairline gap on every module edge.">
+    <figcaption><span>Fig. 5</span> Eight pixels per module, magnified.</figcaption>
+  </figure>
+</section>
+
+<section id="screens" class="screens">
+  <h2 class="section-title">On the screen</h2>
+
+  <div class="shot-grid">
+    <figure>
+      <img src="img/empty.png" width="1440" height="900" loading="lazy"
+           alt="The empty editor: a payload field holding the words Type or paste, the error-correction keys L M Q H with Q selected, four ink swatches, the module-scale ladder, three style chips, and an empty square plate.">
+      <figcaption><span>Fig. 6</span> Before the first keystroke — the plate waits, sized to the standard.</figcaption>
+    </figure>
+    <figure>
+      <img src="img/dark.png" width="1440" height="900" loading="lazy"
+           alt="The same editor in the dark theme: near-black chrome, newsprint text, lime accents, the appearance keys Auto, Light and Dark in the top bar, and a white plate holding the black symbol.">
+      <figcaption><span>Fig. 7</span> Dark. The chrome follows the theme; the plate stays white.</figcaption>
+    </figure>
+    <figure>
+      <img src="img/picker.png" width="1440" height="900" loading="lazy"
+           alt="The template list open over the editor: fourteen rows from Text to Ethereum, each with the string format it composes, the current one filled in lime.">
+      <figcaption><span>Fig. 8</span> The template list, opened from the type line.</figcaption>
+    </figure>
+    <figure>
+      <img src="img/wifi.png" width="1440" height="900" loading="lazy"
+           alt="The Wi-Fi template with a network name typed: four fields, the compose keys for security and hidden network, the resulting WIFI: string in a monospaced box, and the symbol beside it.">
+      <figcaption><span>Fig. 9</span> A Wi-Fi record, composed from its fields and shown underneath.</figcaption>
+    </figure>
+    <figure class="narrow">
+      <img src="img/phone.png" width="780" height="1688" loading="lazy"
+           alt="The editor at phone width: payload field, then the symbol, then error correction, ink, module scale and style controls, with Copy Image and Save PNG pinned to the bottom.">
+      <figcaption><span>Fig. 10</span> Phone width — the symbol sits directly under the payload.</figcaption>
+    </figure>
+    <figure class="narrow">
+      <img src="img/phone-wifi.png" width="780" height="1688" loading="lazy"
+           alt="The Wi-Fi template at phone width: network name, password, security keys, the composed string, and the symbol below.">
+      <figcaption><span>Fig. 11</span> The same form on a phone.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="payloads" class="payloads">
+  <h2 class="section-title">Fourteen payloads</h2>
+  <p class="section-intro">Each payload is a short form that composes its own string, with the result always shown underneath. A Wi-Fi record, a vCard, a BIP 21 URI and an EIP-681 call are built from their parts, not pasted as opaque text.</p>
+  <p class="section-intro">On Android the app is also a share target: share a link from any app and it opens with the symbol already drawn. A fresh launch always starts on Text, with the caret in the box.</p>
+
+  <ul class="tpl">
+    <li class="on"><span class="name">Text</span><span class="fmt">plain UTF-8</span><span class="state">READY</span></li>
+    <li><span class="name">URL</span><span class="fmt">https://…</span><span class="state">READY</span></li>
+    <li><span class="name">Wi-Fi</span><span class="fmt">WIFI:T:WPA2;S:…;P:…;H:false;;</span><span class="state">READY</span></li>
+    <li><span class="name">Email</span><span class="fmt">mailto:…?subject=…&amp;body=…</span><span class="state">READY</span></li>
+    <li><span class="name">Phone</span><span class="fmt">tel:…</span><span class="state">READY</span></li>
+    <li><span class="name">SMS</span><span class="fmt">SMSTO:…:…</span><span class="state">READY</span></li>
+    <li><span class="name">Geo</span><span class="fmt">geo:lat,lng</span><span class="state">READY</span></li>
+    <li><span class="name">Calendar</span><span class="fmt">iCalendar VEVENT</span><span class="state">READY</span></li>
+    <li><span class="name">Contact</span><span class="fmt">vCard 3.0</span><span class="state">READY</span></li>
+    <li><span class="name">Bitcoin</span><span class="fmt">BIP 21</span><span class="state">READY</span></li>
+    <li><span class="name">Lightning</span><span class="fmt">BOLT 11</span><span class="state">READY</span></li>
+    <li><span class="name">Monero</span><span class="fmt">monero:…?tx_amount=…</span><span class="state">READY</span></li>
+    <li><span class="name">Zcash</span><span class="fmt">ZIP 321</span><span class="state">READY</span></li>
+    <li><span class="name">Ethereum / EVM</span><span class="fmt">EIP-681</span><span class="state">READY</span></li>
+  </ul>
+</section>
+
+<section id="privacy" class="privacy">
+  <h2 class="section-title">Privacy is the architecture</h2>
+  <p class="statement">The Wi-Fi password you type never reaches a socket, a log or a database — because there is no server to reach.</p>
+  <div class="privacy-grid">
+    <div><h4>SENT</h4><p>Nothing. The app makes no network requests at all.</p></div>
+    <div><h4>STORED</h4><p>Your last error-correction level, ink, scale, style and theme. Never the payload.</p></div>
+    <div><h4>REQUIRED</h4><p>No account, no licence key, no sign-in.</p></div>
+  </div>
+</section>
+
+<section id="build" class="build">
+  <div class="build-copy">
+    <h2 class="section-title">Get it</h2>
+    <p>Signed builds for macOS and Android come from <a href="https://github.com/jooray/qrencoder/releases">GitHub releases</a>, and Android updates can arrive through Obtainium or <a href="https://zapstore.dev/apps/io.bednar.qrencoder">Zapstore</a>. Linux builds from source.</p>
+    <p class="muted">You need Flutter 3.47 or newer. The macOS window opens at 1440 × 900; payloads can also arrive on the command line.</p>
+  </div>
+  <div class="build-code">
+<pre><code>flutter pub get
+
+flutter run -d macos
+flutter build macos --release
+
+flutter run -d &lt;android-device&gt;
+flutter build apk --release</code></pre>
+    <p class="cmd-note">qrencoder "WIFI:T:WPA2;S:…;P:…;;"</p>
+  </div>
+</section>
+
+<section class="note">
+  <h2 class="section-title">About this build</h2>
+  <p>QREncoder is a test of free coding models: the app, this page and the release were built in an agent session running on a no-cost model, working from a written spec and a design brief. A write-up will be linked here.</p>
+</section>
+
+</main>
+
+<footer>
+  <div class="foot-left">
+    <b>QRENCODER</b>
+    <span>v1.1 · macOS, Linux, Android</span>
+  </div>
+  <div class="foot-right">
+    <span>Runs entirely on your machine.</span>
+    <span class="accent-mark" aria-hidden="true"></span>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,176 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-31T10:05:00Z",
+  "title": "Design System: QREncoder",
+  "extensions": {
+    "colorMeta": {
+      "newsprint": {
+        "role": "neutral",
+        "displayName": "Newsprint",
+        "canonical": "#F5F3EE",
+        "tonalRamp": ["#0F0F0E", "#232322", "#3D3D3B", "#5C5C58", "#7C7C77", "#9E9E98", "#C6C6C0", "#F5F3EE"]
+      },
+      "ink": {
+        "role": "primary",
+        "displayName": "Press Ink",
+        "canonical": "#111110",
+        "tonalRamp": ["#111110", "#1F1F1E", "#333332", "#4C4C4A", "#6B6B68", "#8F8F8B", "#B9B9B4", "#EDEDE8"]
+      },
+      "accent": {
+        "role": "secondary",
+        "displayName": "Highlighter Lime",
+        "canonical": "#D8FF3E",
+        "tonalRamp": ["#232A05", "#3E4A0C", "#5C6C12", "#7C9019", "#9DB421", "#BCD52F", "#D8FF3E", "#EEFFB8"]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Pencil Grey",
+        "canonical": "#6B6B62",
+        "tonalRamp": ["#131311", "#232320", "#3A3A35", "#52524B", "#6B6B62", "#8F8F85", "#B8B8AE", "#E4E4DB"]
+      },
+      "muted-dark": {
+        "role": "neutral",
+        "displayName": "Pencil Grey, inverted",
+        "canonical": "#9C9C93",
+        "tonalRamp": ["#141413", "#262624", "#3C3C39", "#565651", "#73736C", "#9C9C93", "#C6C6BE", "#EFEFE9"]
+      },
+      "plate": {
+        "role": "neutral",
+        "displayName": "Specimen Plate",
+        "canonical": "#FFFFFF",
+        "tonalRamp": ["#111111", "#2B2B2B", "#4A4A4A", "#6E6E6E", "#959595", "#BFBFBF", "#E3E3E3", "#FFFFFF"]
+      },
+      "ink-blue": {
+        "role": "secondary",
+        "displayName": "Blueprint Ink",
+        "canonical": "#16324F",
+        "tonalRamp": ["#05090F", "#0B1726", "#16324F", "#254E77", "#396C9C", "#5C8DBB", "#96B6D3", "#DCE7F1"]
+      },
+      "ink-green": {
+        "role": "secondary",
+        "displayName": "Ledger Green",
+        "canonical": "#0E4B3A",
+        "tonalRamp": ["#030F0C", "#071F18", "#0E4B3A", "#166B53", "#20896C", "#3FA98A", "#7DC8B1", "#D6EFE6"]
+      },
+      "ink-rust": {
+        "role": "secondary",
+        "displayName": "Stamp Rust",
+        "canonical": "#6B1F1A",
+        "tonalRamp": ["#150605", "#2A0C0A", "#451310", "#6B1F1A", "#93302A", "#B5554D", "#D79B95", "#F4DDDA"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Specimen Display", "purpose": "Payload type, section numerals, module counts, key letters. Silkscreen, all caps, never below 10 px." },
+      "title": { "displayName": "App wordmark", "purpose": "QRENCODER in the top bar, and the page h1 at display scale on the site." },
+      "label": { "displayName": "Control Label", "purpose": "8–9 px uppercase Barlow 600 at 1.9 px tracking; names sections, keys and measurements." },
+      "body": { "displayName": "Editor Body", "purpose": "Typed payload text, field contents and the few sentences of interface copy." },
+      "mono": { "displayName": "Encoded String", "purpose": "Composed payloads, hints in empty states, export arithmetic." }
+    },
+    "shadows": [],
+    "motion": [],
+    "breakpoints": [
+      { "name": "phone", "value": "0–899px" },
+      { "name": "desktop", "value": "900px" },
+      { "name": "site-wide", "value": "1080px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Key, selected",
+      "kind": "chip",
+      "refersTo": "key-selected",
+      "description": "The chosen value in a key row: error correction, Wi-Fi security, hidden network, appearance. Lime fill, ink text, 2 px ink frame.",
+      "html": "<button class=\"ds-key ds-key--on\">Q</button>",
+      "css": ".ds-key{display:inline-flex;align-items:center;justify-content:center;min-width:44px;height:38px;padding:0 12px;border:1px solid #111110;background:transparent;color:#111110;font-family:'Barlow',system-ui,sans-serif;font-size:9px;font-weight:600;letter-spacing:.19em;text-transform:uppercase;cursor:pointer;border-radius:0}.ds-key--on{background:#D8FF3E;border-width:2px;color:#111110}.ds-key:hover:not(.ds-key--on){background:rgba(17,17,16,.06)}.ds-key:focus-visible{outline:2px solid #111110;outline-offset:2px}"
+    },
+    {
+      "name": "Key, idle",
+      "kind": "chip",
+      "refersTo": "key-unselected",
+      "description": "Unchosen keys sit at 1 px ink on transparent. Never greyed out; the value is still actionable.",
+      "html": "<button class=\"ds-key\">M</button>",
+      "css": ".ds-key{display:inline-flex;align-items:center;justify-content:center;min-width:44px;height:38px;padding:0 12px;border:1px solid #111110;background:transparent;color:#111110;font-family:'Barlow',system-ui,sans-serif;font-size:9px;font-weight:600;letter-spacing:.19em;text-transform:uppercase;cursor:pointer;border-radius:0}.ds-key:hover{background:rgba(17,17,16,.06)}.ds-key:focus-visible{outline:2px solid #111110;outline-offset:2px}"
+    },
+    {
+      "name": "Primary action",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Copy Image: the one filled button. Inverted ink, square, 2 px frame; disabled it loses its fill and turns muted.",
+      "html": "<button class=\"ds-btn-primary\">COPY IMAGE</button>",
+      "css": ".ds-btn-primary{padding:11px 16px;border:2px solid #111110;background:#111110;color:#F5F3EE;font-family:'Barlow',system-ui,sans-serif;font-size:9px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;border-radius:0}.ds-btn-primary:hover{background:#D8FF3E;color:#111110}.ds-btn-primary:focus-visible{outline:2px solid #111110;outline-offset:3px}.ds-btn-primary[disabled]{background:transparent;border-color:rgba(17,17,16,.28);color:#6B6B62;cursor:default}"
+    },
+    {
+      "name": "Secondary action",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Save PNG and Reset: transparent, 2 px ink frame, no fill until hover.",
+      "html": "<button class=\"ds-btn-ghost\">SAVE PNG</button>",
+      "css": ".ds-btn-ghost{padding:11px 16px;border:2px solid #111110;background:transparent;color:#111110;font-family:'Barlow',system-ui,sans-serif;font-size:9px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;border-radius:0}.ds-btn-ghost:hover{background:#D8FF3E}.ds-btn-ghost:focus-visible{outline:2px solid #111110;outline-offset:3px}"
+    },
+    {
+      "name": "Payload field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "A square-bordered box on the newsprint ground, Barlow 15 px, caret at 1.6 px. Focus is the caret only.",
+      "html": "<div class=\"ds-field\"><input class=\"ds-input\" value=\"WIFI:T:WPA2;S:Cafe-Werkstatt-5G;P:mulligan-18-river;H:false;;\"></div>",
+      "css": ".ds-field{border:2px solid #111110;padding:10px 12px;background:transparent}.ds-input{width:100%;border:0;outline:0;background:transparent;color:#111110;font-family:'Barlow',system-ui,sans-serif;font-size:15px;line-height:1.45;caret-color:#111110}.ds-input::selection{background:rgba(216,255,62,.55)}"
+    },
+    {
+      "name": "Section header",
+      "kind": "custom",
+      "description": "Uppercase 9 px label over a 1 px rule, with a Courier Prime count at the right. The only heading level inside the controls.",
+      "html": "<div class=\"ds-section\"><span class=\"ds-section__label\">PAYLOAD</span><span class=\"ds-section__trail\">61 CHARS</span></div>",
+      "css": ".ds-section{display:flex;justify-content:space-between;align-items:baseline;padding-bottom:6px;border-bottom:1px solid #111110;min-width:320px}.ds-section__label{font-family:'Barlow',system-ui,sans-serif;font-size:9px;font-weight:600;letter-spacing:.19em;color:#111110}.ds-section__trail{font-family:'Courier Prime',ui-monospace,monospace;font-size:10px;color:#6B6B62}"
+    },
+    {
+      "name": "Style chip",
+      "kind": "card",
+      "refersTo": "chip-style",
+      "description": "A white plate with a live 48 px sample of the symbol, the style name beneath. Selected chip carries a 3 px accent frame.",
+      "html": "<button class=\"ds-style ds-style--on\"><span class=\"ds-style__plate\"></span><span class=\"ds-style__name\">DEFAULT</span></button>",
+      "css": ".ds-style{display:inline-flex;flex-direction:column;align-items:center;gap:6px;padding:6px;border:3px solid #D8FF3E;background:transparent;cursor:pointer;border-radius:0}.ds-style--off{border:1px solid rgba(17,17,16,.28)}.ds-style__plate{width:48px;height:48px;background:#FFFFFF;background-image:linear-gradient(#111110,#111110);background-size:12px 12px;background-repeat:space;background-position:6px 6px}.ds-style__name{font-family:'Barlow',system-ui,sans-serif;font-size:8px;font-weight:600;letter-spacing:.19em;color:#111110}.ds-style:hover{border-color:#111110}"
+    },
+    {
+      "name": "Apparatus measure",
+      "kind": "custom",
+      "description": "One measurement in the right margin: muted 8 px label over a Silkscreen value, closed by a hairline.",
+      "html": "<div class=\"ds-measure\"><span class=\"ds-measure__label\">MODULES</span><span class=\"ds-measure__value\">41 × 41</span></div>",
+      "css": ".ds-measure{display:flex;flex-direction:column;gap:4px;padding:10px 0;border-bottom:1px solid rgba(17,17,16,.28);min-width:150px}.ds-measure__label{font-family:'Barlow',system-ui,sans-serif;font-size:8px;font-weight:600;letter-spacing:.2em;color:#6B6B62}.ds-measure__value{font-family:'Silkscreen',monospace;font-size:11px;letter-spacing:.04em;color:#111110}"
+    },
+    {
+      "name": "Template row",
+      "kind": "nav",
+      "description": "A row of the payload picker: name in Barlow 600, composed format right-aligned in Courier Prime, 40 px tall, hairline between rows.",
+      "html": "<button class=\"ds-tpl\"><span class=\"ds-tpl__name\">WI-FI</span><span class=\"ds-tpl__fmt\">WIFI:T:…;S:…;P:…;;</span></button>",
+      "css": ".ds-tpl{display:flex;align-items:center;gap:12px;width:320px;height:40px;padding:0 12px;border:0;border-bottom:1px solid rgba(17,17,16,.16);background:#F5F3EE;color:#111110;cursor:pointer;text-align:left;border-radius:0}.ds-tpl__name{width:104px;font-family:'Barlow',system-ui,sans-serif;font-size:12px;font-weight:600;letter-spacing:.02em}.ds-tpl__fmt{margin-left:auto;font-family:'Courier Prime',ui-monospace,monospace;font-size:10px;color:#6B6B62;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ds-tpl:hover{background:#EBE8E0}.ds-tpl--on{background:#D8FF3E;border-bottom-color:rgba(17,17,16,.16)}.ds-tpl--on .ds-tpl__fmt{color:#111110}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Bitmap Specimen",
+    "overview": "QREncoder is a lab plate for a QR symbol: a printed sheet with a measured specimen in the middle, the parameters that produced it along the edge, and nothing else on the page. It borrows technical printing vocabulary — hairlines, crop ticks, tabular figures, silkscreen capitals — and refuses everything that would make it feel like a consumer app. The symbol is the only object allowed to be photographic; everything around it is a rule, a number or a control.",
+    "keyCharacteristics": [
+      "Newsprint ground, near-black ink, one acid-lime accent used as a highlighter.",
+      "Three voices with strict jobs: Silkscreen for numbers and names, Barlow for labels, Courier Prime for encoded strings.",
+      "1 px hairlines inside a section, 2 px rules around it, no shadows anywhere.",
+      "The plate is always white and the modules always dark, in both themes."
+    ],
+    "rules": [
+      { "name": "The Symbol Is Never Themed", "body": "The plate stays #FFFFFF and the modules stay the chosen ink in light and dark mode. Dark mode changes the chrome only.", "section": "colors" },
+      { "name": "No White On Lime", "body": "Text on the accent is always #111110. White on #D8FF3E collapses to roughly 1.4:1 and disappears.", "section": "colors" },
+      { "name": "Draw, Don't Shadow", "body": "Depth is expressed with 1 px and 2 px rules, never with elevation, blur or translucency.", "section": "elevation" },
+      { "name": "Numbers Get The Display Face", "body": "Module counts, export sizes, scale values and key letters are Silkscreen; prose is Barlow.", "section": "typography" }
+    ],
+    "dos": [
+      "Do keep the symbol ink-on-white at an integer module scale with the four-module quiet zone intact.",
+      "Do put a control's current value next to the control.",
+      "Do use the accent as a fill behind a selected key, a 3 px underline, or a 7 px dot.",
+      "Do state failures plainly and briefly: CANNOT ENCODE, LOWER THE LEVEL."
+    ],
+    "donts": [
+      "Don't use rounded corners, cards, shadows, gradients or Material 3 components in the chrome.",
+      "Don't put white text on the lime accent.",
+      "Don't leave explanatory prose in the interface.",
+      "Don't add a Generate button, a spinner or any confirm step between typing and the symbol."
+    ]
+  }
+}

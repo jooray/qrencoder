@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <!-- The PNG that sits behind the clipboard URI. Cache only: it is a copy
+         of the current symbol, never a record of anything. -->
+    <cache-path name="clipboard" path="clipboard/" />
+</paths>
