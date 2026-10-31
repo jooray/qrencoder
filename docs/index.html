@@ -172,8 +172,28 @@
 <section id="build" class="build">
   <div class="build-copy">
     <h2 class="section-title">Get it</h2>
-    <p>Signed builds for macOS and Android come from <a href="https://github.com/jooray/qrencoder/releases">GitHub releases</a>, and Android updates can arrive through Obtainium or <a href="https://zapstore.dev/apps/io.bednar.qrencoder">Zapstore</a>. Linux builds from source.</p>
-    <p class="muted">You need Flutter 3.47 or newer. The macOS window opens at 1440 × 900; payloads can also arrive on the command line.</p>
+    <p>Signed builds for macOS and Android ship from these channels. Linux builds from source.</p>
+    <ul class="channels">
+      <li>
+        <a href="https://github.com/jooray/qrencoder/releases">
+          <span class="ch">GitHub releases</span>
+          <span class="det">macOS DMG · Android APK · v1.1.0</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://zapstore.dev/apps/io.bednar.qrencoder">
+          <span class="ch">Zapstore</span>
+          <span class="det">io.bednar.qrencoder · signed, nostr-verified</span>
+        </a>
+      </li>
+      <li>
+        <a href="obtainium://add/https://github.com/jooray/qrencoder">
+          <span class="ch">Obtainium</span>
+          <span class="det">follow the releases for updates</span>
+        </a>
+      </li>
+    </ul>
+    <p class="muted">Signed with the same Android publisher key everywhere — certificate SHA-256 <span class="hash">79750fb4…a20b3a24d</span>. You need Flutter 3.47 or newer to build; the macOS window opens at 1440 × 900, and payloads can also arrive on the command line.</p>
   </div>
   <div class="build-code">
 <pre><code>flutter pub get

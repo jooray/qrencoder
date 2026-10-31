@@ -520,6 +520,53 @@ figcaption span {
   margin: 12px 0 0;
 }
 
+
+/* Install channels, drawn like the payload rows. */
+
+.channels {
+  list-style: none;
+  margin: 8px 0 22px;
+  padding: 0;
+  border-top: 2px solid var(--ink);
+}
+
+.channels li { border-bottom: 1px solid var(--hair-soft); }
+
+.channels a {
+  display: grid;
+  grid-template-columns: 190px minmax(0, 1fr);
+  gap: 16px;
+  align-items: baseline;
+  padding: 13px 0;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.channels a:hover .ch { background: var(--accent); color: var(--on-accent); }
+.channels a:hover .det { color: var(--ink); }
+
+.channels .ch {
+  justify-self: start;
+  font-weight: 600;
+  font-size: 15px;
+  padding: 2px 0;
+}
+
+.channels .det {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hash {
+  font-family: var(--mono);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
 /* ------------------------------------------------------------- footer --- */
 
 footer {
@@ -566,6 +613,7 @@ footer {
   .shot-grid { grid-template-columns: 1fr; }
   .privacy-grid { grid-template-columns: 1fr; gap: 28px; }
   .build { grid-template-columns: 1fr; }
+  .channels a { grid-template-columns: 150px minmax(0, 1fr); }
 }
 
 @media (max-width: 760px) {
@@ -589,6 +637,8 @@ footer {
   .specs { grid-template-columns: 1fr; }
   .spec { border-right: 0; border-bottom: 1px solid var(--hair); }
   .style-grid li { display: flex; flex-direction: column; }
+  .channels a { grid-template-columns: 1fr; gap: 3px; }
+  .channels .det { white-space: normal; }
   .style-grid img { width: 100%; }
   .tpl li {
     grid-template-columns: minmax(0, 1fr) auto;
