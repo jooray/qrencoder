@@ -1,11 +1,10 @@
 import 'dart:io';
 import 'dart:ui' as ui;
-import 'dart:convert' show base64Encode;
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show Clipboard, ClipboardData;
 import 'package:file_picker/file_picker.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:super_clipboard/super_clipboard.dart';
 
 import 'qr_preview.dart';
 
@@ -89,10 +88,15 @@ class ExportActions extends StatelessWidget {
       final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
       final pngBytes = byteData!.buffer.asUint8List();
 
-      // Copy QR code image to clipboard using base64 encoding
-      // Android/iOS will decode this when pasting into image editors
-      final base64Image = 'data:image/png;base64,${base64Encode(pngBytes)}';
-      await Clipboard.setData(ClipboardData(text: base64Image));
+      // Write the raw PNG image bytes (not text) to the system clipboard so
+      // pasting yields an actual image in editors, chat apps, etc.
+      final clipboard = SystemClipboard.instance;
+      if (clipboard == null) {
+        throw UnsupportedError('System clipboard not available on this platform');
+      }
+      final item = DataWriterItem(suggestedName: 'qrcode.png');
+      item.add(Formats.png(pngBytes));
+      await clipboard.write([item]);
 
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(

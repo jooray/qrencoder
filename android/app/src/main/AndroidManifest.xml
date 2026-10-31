@@ -71,6 +71,13 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
+        <!-- super_clipboard: required provider for reading/writing image bytes to the clipboard -->
+        <provider
+            android:name="com.superlist.super_native_extensions.DataProvider"
+            android:exported="true"
+            android:authorities="${applicationId}.super_native_extensions.data"
+            android:grantUriPermissions="true" />
     </application>
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility and
