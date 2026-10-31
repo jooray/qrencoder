@@ -1,11 +1,9 @@
+import 'dart:io';
 import 'dart:ui' as ui;
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'dart:convert' show base64Encode;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show Clipboard, ClipboardData;
 import 'package:file_picker/file_picker.dart';
-import 'package:super_clipboard/super_clipboard.dart';
-import 'dart:io';
-
 import 'package:share_plus/share_plus.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -91,40 +89,21 @@ class ExportActions extends StatelessWidget {
       final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
       final pngBytes = byteData!.buffer.asUint8List();
 
-      // Use super_clipboard to copy the actual image to clipboard
-      // Note: Web doesn't support copying image data directly
-      if (!kIsWeb) {
-        final item = DataWriterItem(suggestedName: 'qrcode.png');
-        item.add(Formats.png(pngBytes));
-        await ClipboardWriter.instance.write([item]);
+      // Copy QR code image to clipboard using base64 encoding
+      // Android/iOS will decode this when pasting into image editors
+      final base64Image = 'data:image/png;base64,${base64Encode(pngBytes)}';
+      await Clipboard.setData(ClipboardData(text: base64Image));
 
-        if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('QR code image copied to clipboard')),
-          );
-        }
-      } else {
-        // Web fallback: copy as text
-        await Clipboard.setData(const ClipboardData(text: 'QR code image - paste into image editor'));
-        if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Image copy not supported on web')),
-          );
-        }
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('QR code image copied to clipboard')),
+        );
       }
     } catch (e) {
       if (context.mounted) {
-        // Fallback to text payload
-        try {
-          await Clipboard.setData(ClipboardData(text: payload));
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('QR payload copied to clipboard')),
-          );
-        } catch (e2) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Clipboard copy failed: $e')),
-          );
-        }
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Copy to clipboard failed: $e')),
+        );
       }
     }
   }
