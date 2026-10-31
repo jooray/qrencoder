@@ -74,6 +74,13 @@ from the same code it documents.
 
 ## About this build
 
-QREncoder was built as a test of free coding models: the app, the site and the release came out
-of an agent session running on a no-cost model, working from a written spec (`SPEC.md`) and a
-design brief (`DESIGN.md`). A write-up will be linked here.
+QREncoder 1.1.0 was built by an agent running on **free tokens** — DeepSeek 4.1 Flash on its free
+tier — with nothing paid anywhere in the loop. It is not a demo or a benchmark artefact: it is
+the QR generator its author uses, standing in for a Mac app that is no longer maintained.
+
+The app, the site and the release came out of that session working from a written spec
+(`SPEC.md`) and a design brief (`DESIGN.md`). The experiment, its numbers, and the rougher first
+build from a pool of free models are written up in:
+
+- [Token poverty: can you use freely available AI to do productive work?](https://juraj.bednar.io/en/blog-en/2026/10/31/token-poverty-can-you-use-freely-available-ai-to-do-productive-work/) (English)
+- [Tokenová chudoba: dá sa s voľne dostupnou AI robiť produktívna práca?](https://juraj.bednar.io/blog/2026/10/31/tokenova-chudoba-da-sa-s-volne-dostupnou-ai-robit-produktivna-praca/) (Slovak)

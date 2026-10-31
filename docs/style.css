@@ -455,7 +455,10 @@ figcaption span {
 /* --------------------------------------------------------------- note --- */
 
 .note { border-top: 2px solid var(--ink); }
-.note p { max-width: 62ch; color: var(--body); font-size: 15px; margin: 0; }
+.note p { max-width: 62ch; color: var(--body); font-size: 15px; margin: 0 0 14px; }
+.note p:last-child { margin-bottom: 0; }
+.note a { color: var(--ink); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+.note a:hover { background: var(--accent); color: var(--on-accent); text-decoration: none; }
 
 /* ------------------------------------------------------------ privacy --- */
 
