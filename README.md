@@ -32,8 +32,8 @@ The project page lives at <https://jooray.github.io/qrencoder/>.
 
 ## Install
 
-- **macOS** — `QREncoder-<version>.dmg` from the [releases page](https://github.com/jooray/qrencoder/releases),
-  or build it yourself (below).
+- **macOS** — build it from source ([instructions below](#building-on-macos)). There is no
+  signed or notarized macOS download.
 - **Android** — `qrencoder-<version>.apk` from the same page, or update it with
   [Obtainium](https://github.com/ImranR98/Obtainium) pointing at those releases. It is also on
   [Zapstore](https://zapstore.dev/apps/io.bednar.qrencoder).
@@ -59,8 +59,26 @@ qrencoder "WIFI:T:WPA2;S:Cafe;P:secret;;"
 ```
 
 Android release builds are signed with the publisher key at
-`~/.apk-signing-keystore/signing.properties`; without that file Gradle falls back to the debug
-key so a plain checkout still builds.
+`~/.apk-signing-keystore/signing.properties`. Without that file `flutter build apk --release`
+fails on purpose, rather than quietly producing a debug-signed APK. For a throwaway local test
+build use `flutter build apk --debug`, or set `allowDebugSigning=true` in
+`~/.gradle/gradle.properties` to get a debug-signed release APK (never publish that one).
+
+### Building on macOS
+
+The macOS app is not signed with an Apple Developer ID and is not notarized, so a downloaded
+binary would be blocked by Gatekeeper. Build it yourself instead:
+
+1. Install Xcode (with the command line tools) and Flutter 3.47 or newer.
+2. `git clone https://github.com/jooray/qrencoder && cd qrencoder`
+3. `flutter pub get && flutter build macos --release`
+4. The app is at `build/macos/Build/Products/Release/qrencoder.app`. Copy it to `/Applications`
+   or run it where it is.
+
+An app you compiled on your own machine runs normally. If macOS still refuses to open it (for
+example after you copied it from another computer), right-click the app, choose Open, and
+confirm, or remove the quarantine flag: `xattr -dr com.apple.quarantine /path/to/qrencoder.app`.
+Do this only for builds you made yourself or have verified from the source.
 
 ## Tests
 

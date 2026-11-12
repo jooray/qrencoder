@@ -7,8 +7,9 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
-// The shared publisher key. Kept outside the repository — a CI machine without
-// it still builds, it just falls back to the debug key.
+// The shared publisher key. Kept outside the repository. A release build
+// without it fails; pass -PallowDebugSigning=true to build a debug-signed
+// release for local testing only.
 val keystoreProperties = Properties().apply {
     val path = System.getenv("APP_SIGNING_PROPERTIES")
         ?: "${System.getProperty("user.home")}/.apk-signing-keystore/signing.properties"
@@ -52,8 +53,13 @@ android {
 
     buildTypes {
         release {
-            signingConfig = signingConfigs.findByName("release")
-                ?: signingConfigs.getByName("debug")
+            val release = signingConfigs.findByName("release")
+            signingConfig = when {
+                release != null -> release
+                project.hasProperty("allowDebugSigning") ->
+                    signingConfigs.getByName("debug")
+                else -> null
+            }
         }
     }
 }
@@ -71,4 +77,20 @@ kotlin {
 
 flutter {
     source = "../.."
+}
+
+// Fail release builds loudly instead of shipping a debug-signed APK.
+gradle.taskGraph.whenReady {
+    val releaseTask = allTasks.any {
+        it.project == project && Regex("^(assemble|bundle|package)Release\$").matches(it.name)
+    }
+    if (releaseTask && keystoreProperties.getProperty("storeFile") == null &&
+        !project.hasProperty("allowDebugSigning")
+    ) {
+        throw GradleException(
+            "No release signing config: set storeFile in " +
+                "~/.apk-signing-keystore/signing.properties (or APP_SIGNING_PROPERTIES), " +
+                "or pass -PallowDebugSigning=true for a local test build."
+        )
+    }
 }
