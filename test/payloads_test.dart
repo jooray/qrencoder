@@ -140,4 +140,58 @@ void main() {
       'ethereum:0xabc@137?value=1000000000000000',
     );
   });
+
+  group('amount validation', () {
+    String btc(String a) => composePayload(
+        PayloadType.bitcoin, {'address': 'bc1qxyz', 'amount': a});
+    test('accepts plain decimals', () {
+      expect(btc('0.5'), 'bitcoin:bc1qxyz?amount=0.5');
+      expect(btc('12'), 'bitcoin:bc1qxyz?amount=12');
+    });
+    test('drops NaN, Infinity, exponents, negatives and junk', () {
+      for (final bad in ['NaN', 'Infinity', '1e400', '1e5', '-1', '+1', '.5', '1.', '1,5', '0x10']) {
+        expect(btc(bad), 'bitcoin:bc1qxyz', reason: bad);
+      }
+    });
+    test('monero, zcash and ethereum use the same rules', () {
+      expect(composePayload(PayloadType.monero, {'address': 'a', 'amount': 'NaN'}), 'monero:a');
+      expect(composePayload(PayloadType.zcash, {'address': 'a', 'amount': '-2'}), 'zcash:a');
+      expect(composePayload(PayloadType.evm, {'address': '0x1', 'value': '1.5'}), 'ethereum:0x1');
+      expect(composePayload(PayloadType.evm, {'address': '0x1', 'value': '1e18'}), 'ethereum:0x1');
+      expect(composePayload(PayloadType.evm, {'address': '0x1', 'value': '1000'}), 'ethereum:0x1?value=1000');
+    });
+  });
+
+  test('geo validates ranges and numbers', () {
+    String geo(String a, String b) =>
+        composePayload(PayloadType.geo, {'lat': a, 'lng': b});
+    expect(geo('48.15', '17.1'), 'geo:48.15,17.1');
+    expect(geo('-90', '180'), 'geo:-90,180');
+    expect(geo('91', '0'), '');
+    expect(geo('0', '181'), '');
+    expect(geo('NaN', '0'), '');
+    expect(geo('1e400', '0'), '');
+  });
+
+  test('vcard values cannot inject extra lines', () {
+    final out = composePayload(PayloadType.contact, {
+      'name': 'Ada\r\nTEL:666',
+      'phone': '1\r\nURL:evil',
+      'email': 'a@b.c\nNOTE:x',
+      'url': 'https://x\rFN:y',
+    });
+    final lines = out.split('\r\n');
+    expect(lines.length, 8);
+    expect(lines.where((l) => l.startsWith('TEL:')).length, 1);
+    expect(lines.where((l) => l.startsWith('FN:')).length, 1);
+    expect(lines.where((l) => l.startsWith('NOTE:')).length, 0);
+  });
+
+  test('ical escapes bare carriage returns', () {
+    final out = composePayload(PayloadType.calendar,
+        {'summary': 'a\rEND:VEVENT', 'description': 'x\ny\r\nz'});
+    expect(out.split('\r\n').where((l) => l == 'END:VEVENT').length, 1);
+    expect(out, contains(r'SUMMARY:a\nEND:VEVENT'));
+    expect(out, contains(r'DESCRIPTION:x\ny\nz'));
+  });
 }

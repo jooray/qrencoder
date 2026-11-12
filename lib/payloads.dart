@@ -221,7 +221,7 @@ String composePayload(PayloadType type, Map<String, String> values) {
     case PayloadType.geo:
       final lat = at('lat');
       final lng = at('lng');
-      if (lat.isEmpty || lng.isEmpty) return '';
+      if (!_inRange(lat, 90) || !_inRange(lng, 180)) return '';
       return 'geo:$lat,$lng';
 
     case PayloadType.calendar:
@@ -252,9 +252,9 @@ String composePayload(PayloadType type, Map<String, String> values) {
         'N:${_vcardEscape(name)}',
         'FN:${_vcardEscape(name)}',
         if (at('org').isNotEmpty) 'ORG:${_vcardEscape(at('org'))}',
-        if (at('phone').isNotEmpty) 'TEL:${at('phone')}',
-        if (at('email').isNotEmpty) 'EMAIL:${at('email')}',
-        if (at('url').isNotEmpty) 'URL:${at('url')}',
+        if (at('phone').isNotEmpty) 'TEL:${_vcardLine(at('phone'))}',
+        if (at('email').isNotEmpty) 'EMAIL:${_vcardLine(at('email'))}',
+        if (at('url').isNotEmpty) 'URL:${_vcardLine(at('url'))}',
         'END:VCARD',
       ].join('\r\n');
 
@@ -303,12 +303,21 @@ String composePayload(PayloadType type, Map<String, String> values) {
       if (address.isEmpty) return '';
       final chain = at('chain');
       final base = chain.isEmpty ? 'ethereum:$address' : 'ethereum:$address@$chain';
-      return _numeric(at('value')) ? '$base?value=${at('value')}' : base;
+      return _wei(at('value')) ? '$base?value=${at('value')}' : base;
   }
 }
 
-bool _numeric(String value) =>
-    value.isNotEmpty && double.tryParse(value) != null;
+/// Plain non-negative decimal: digits, optionally one fractional part. No
+/// signs, exponents, NaN or Infinity.
+bool _numeric(String value) => RegExp(r'^\d+(\.\d+)?$').hasMatch(value);
+
+/// Whole number (wei).
+bool _wei(String value) => RegExp(r'^\d+$').hasMatch(value);
+
+bool _inRange(String value, double max) {
+  if (!RegExp(r'^-?\d+(\.\d+)?$').hasMatch(value)) return false;
+  return double.parse(value).abs() <= max;
+}
 
 String _dial(String raw) => raw.replaceAll(RegExp(r'[^0-9+]'), '');
 
@@ -320,11 +329,17 @@ String _icalEscape(String value) => value
     .replaceAll('\\', '\\\\')
     .replaceAll(';', '\\;')
     .replaceAll(',', '\\,')
-    .replaceAll('\r\n', '\\n')
-    .replaceAll('\n', '\\n');
+    .replaceAll(RegExp(r'\r\n|\r|\n'), '\\n');
 
-String _vcardEscape(String value) =>
-    value.replaceAll('\\', '\\\\').replaceAll(';', '\\;').replaceAll(',', '\\,');
+String _vcardEscape(String value) => value
+    .replaceAll('\\', '\\\\')
+    .replaceAll(';', '\\;')
+    .replaceAll(',', '\\,')
+    .replaceAll(RegExp(r'\r\n|\r|\n'), '\\n');
+
+/// Values that must stay on one line (TEL, EMAIL, URL): line breaks would let
+/// input inject extra vCard properties, so they are stripped.
+String _vcardLine(String value) => value.replaceAll(RegExp(r'[\r\n]+'), ' ').trim();
 
 /// "2026-10-31 18:00" → "20261031T180000". Anything already stamped passes
 /// through; a bare date gets midnight.
