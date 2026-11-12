@@ -472,7 +472,7 @@ class _EditorScreenState extends State<EditorScreen> {
       if (!mounted) return;
       setState(() {
         if (ec != null && ec >= 0 && ec < _ecOrder.length) _ec = _ecOrder[ec];
-        if (scale != null && scale > 0) _scale = scale;
+        if (scale != null && scale > 0) _scale = math.min(scale, 64);
         if (ink != null && ink >= 0 && ink < _inks.length) _inkIndex = ink;
         if (style != null && style >= 0 && style < QrStyle.values.length) {
           _style = QrStyle.values[style];
@@ -593,7 +593,21 @@ class _EditorScreenState extends State<EditorScreen> {
     });
   }
 
-  int get _exportSide => ((_qr?.moduleCount ?? 0) + 8) * _scale;
+  /// Hard ceiling on the exported bitmap, per side, so a huge code at a large
+  /// module scale cannot exhaust memory.
+  static const int _maxExportSide = 4096;
+
+  /// The scale actually used: the chosen one, reduced if the image would exceed
+  /// [_maxExportSide] pixels per side.
+  int get _effectiveScale {
+    final n = (_qr?.moduleCount ?? 0) + 8;
+    if (n <= 8) return _scale;
+    return math.max(1, math.min(_scale, _maxExportSide ~/ n));
+  }
+
+  bool get _capped => _effectiveScale < _scale;
+
+  int get _exportSide => ((_qr?.moduleCount ?? 0) + 8) * _effectiveScale;
 
   bool get _hasCode => _qr != null;
 
@@ -1416,7 +1430,7 @@ class _EditorScreenState extends State<EditorScreen> {
     return {
       'MODULES': modules == 0 ? '—' : '$modules × $modules',
       'CONTRAST': modules == 0 ? '—' : '${_ratio.toStringAsFixed(1)}:1',
-      'EXPORT': modules == 0 ? '—' : '$_exportSide PX',
+      'EXPORT': modules == 0 ? '—' : '$_exportSide PX${_capped ? ' (CAPPED)' : ''}',
       'SCALE': '$_scale PX',
     };
   }
@@ -1634,7 +1648,8 @@ class _EditorScreenState extends State<EditorScreen> {
     final qr = _qr;
     if (qr == null) return null;
     final n = qr.moduleCount + 8;
-    final size = n * _scale;
+    final scale = _effectiveScale;
+    final size = n * scale;
     final recorder = ui.PictureRecorder();
     final canvas = Canvas(recorder);
     canvas.drawRect(
@@ -1645,10 +1660,10 @@ class _EditorScreenState extends State<EditorScreen> {
       canvas,
       isDark: qr.isDark,
       n: qr.moduleCount,
-      module: _scale.toDouble(),
+      module: scale.toDouble(),
       ink: _foreground,
       style: _style,
-      origin: Offset(4.0 * _scale, 4.0 * _scale),
+      origin: Offset(4.0 * scale, 4.0 * scale),
       finders: true,
     );
     final picture = recorder.endRecording();
@@ -1677,7 +1692,7 @@ class _EditorScreenState extends State<EditorScreen> {
     if (bytes == null) return;
     try {
       await _clipboardChannel.invokeMethod<void>('setPng', bytes);
-      _say('copied · $_exportSide px');
+      _say('copied · $_exportSide px${_capped ? ' · capped at $_maxExportSide' : ''}');
     } on PlatformException {
       _say('clipboard unavailable');
     } on MissingPluginException {
@@ -1721,7 +1736,7 @@ class _EditorScreenState extends State<EditorScreen> {
     if (saved == null) return;
     final path = saved.isScheme('file') ? saved.toFilePath() : null;
     setState(() => _savedPath = path);
-    _say('saved · $_exportSide px');
+    _say('saved · $_exportSide px${_capped ? ' · capped at $_maxExportSide' : ''}');
   }
 }
 
