@@ -139,7 +139,7 @@ than failing:
 
 ## Project site
 
-Static GitHub Pages at <https://jooray.github.io/qrencoder/>, served from `docs/` on `main`.
+Static site at <https://cypherpunk.today/qrencoder/>, built from `docs/` on `main`.
 
 - **Style:** the world of `DESIGN.md` — same palette, type voices and density — taken to page
   scale.

@@ -4,7 +4,7 @@ A local-only QR generator for macOS, Linux and Android. Type or paste, or compos
 fourteen payloads — Wi-Fi, vCard, BIP 21, EIP-681 and the rest — and the symbol is drawn on the
 next frame. There is no Generate button, no network call and no stored payload.
 
-The project page lives at <https://jooray.github.io/qrencoder/>.
+The project page lives at <https://cypherpunk.today/qrencoder/>.
 
 ![The editor](docs/img/editor.png)
 
