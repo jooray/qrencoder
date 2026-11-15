@@ -29,11 +29,18 @@ The project page lives at <https://cypherpunk.today/qrencoder/>.
 - **Nothing leaves the machine.** No network requests at runtime, no telemetry, no accounts.
   Preferences (error correction, ink, scale, style, theme) are remembered; payload contents
   never are.
+- **One small note.** After a couple of days and several exports the app may show a note
+  asking whether you want to support it, with an e-book as thanks. It appears at most three
+  times; *Not now* closes it and *Don't ask again* turns it off for good. A plain *Support the
+  project* link stays in the side panel. Tapping Support opens a page in your browser; the app
+  itself still makes no network request and has no network permission.
 
 ## Install
 
-- **macOS** — build it from source ([instructions below](#building-on-macos)). There is no
-  signed or notarized macOS download.
+- **macOS** — `qrencoder-<version>.dmg` from the same page, or build it from source
+  ([instructions below](#building-on-macos)). The download is not signed with an Apple Developer
+  ID and not notarized, so Gatekeeper refuses it on first launch: right-click the app and choose
+  Open, or run `xattr -dr com.apple.quarantine /Applications/qrencoder.app`.
 - **Android** — `qrencoder-<version>.apk` from the same page, or update it with
   [Obtainium](https://github.com/ImranR98/Obtainium) pointing at those releases. It is also on
   [Zapstore](https://zapstore.dev/apps/io.bednar.qrencoder).

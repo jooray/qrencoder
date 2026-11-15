@@ -11,6 +11,8 @@ import 'package:qr/qr.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'payloads.dart';
+import 'src/support/support_controller.dart';
+import 'support_ask.dart';
 
 void main(List<String> args) {
   WidgetsFlutterBinding.ensureInitialized();
@@ -284,9 +286,12 @@ bool _sampleDark(int r, int c) =>
 // ---------------------------------------------------------------- widget ---
 
 class QrEncoderApp extends StatelessWidget {
-  const QrEncoderApp({super.key, this.initialPayload = ''});
+  const QrEncoderApp({super.key, this.initialPayload = '', this.support});
 
   final String initialPayload;
+
+  /// The support ask's controller; left out in the app, which makes its own.
+  final SupportController? support;
 
   @override
   Widget build(BuildContext context) {
@@ -310,15 +315,16 @@ class QrEncoderApp extends StatelessWidget {
       theme: theme(_light),
       darkTheme: theme(_dark),
       themeMode: ThemeMode.system,
-      home: EditorScreen(initialPayload: initialPayload),
+      home: EditorScreen(initialPayload: initialPayload, support: support),
     );
   }
 }
 
 class EditorScreen extends StatefulWidget {
-  const EditorScreen({super.key, this.initialPayload = ''});
+  const EditorScreen({super.key, this.initialPayload = '', this.support});
 
   final String initialPayload;
+  final SupportController? support;
 
   @override
   State<EditorScreen> createState() => _EditorScreenState();
@@ -348,6 +354,9 @@ class _EditorScreenState extends State<EditorScreen> {
   QrImage? _qr;
   String? _error;
   String _status = '';
+
+  late final SupportController _support =
+      widget.support ?? SupportController(config: qrEncoderSupport);
 
   /// The file the last Save PNG produced, when there is one to point at.
   String? _savedPath;
@@ -409,6 +418,7 @@ class _EditorScreenState extends State<EditorScreen> {
   @override
   void initState() {
     super.initState();
+    unawaited(_support.launch());
     _text.addListener(_reencode);
     if (widget.initialPayload.isNotEmpty) _text.text = widget.initialPayload;
     _restore();
@@ -456,6 +466,7 @@ class _EditorScreenState extends State<EditorScreen> {
     }
     _text.dispose();
     _focus.dispose();
+    if (widget.support == null) _support.dispose();
     super.dispose();
   }
 
@@ -554,6 +565,7 @@ class _EditorScreenState extends State<EditorScreen> {
   }
 
   void _reencode() {
+    _support.surfaceGone();
     final data = _payload;
     if (data.isEmpty) {
       setState(() {
@@ -715,6 +727,7 @@ class _EditorScreenState extends State<EditorScreen> {
             ),
           ),
         ),
+        _supportStrip(p, t, const EdgeInsets.fromLTRB(14, 0, 14, 10)),
         _footer(p, t, compact: true),
       ],
     );
@@ -1276,6 +1289,7 @@ class _EditorScreenState extends State<EditorScreen> {
             ],
           ),
         ),
+        _supportStrip(p, t, const EdgeInsets.fromLTRB(20, 0, 20, 12)),
         _footer(p, t),
       ],
     );
@@ -1417,6 +1431,8 @@ class _EditorScreenState extends State<EditorScreen> {
           const Spacer(),
           if (_qr != null && ratio != '—' && _ratio < 4.0)
             _contrastWarning(p, t),
+          const SizedBox(height: 10),
+          _supportLink(p, t),
         ],
       ),
     );
@@ -1462,14 +1478,21 @@ class _EditorScreenState extends State<EditorScreen> {
       child: LayoutBuilder(
         builder: (context, constraints) {
           final w = (constraints.maxWidth - 18) / 2;
-          return Wrap(
-            spacing: 18,
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              for (final entry in rows)
-                SizedBox(
-                  width: w,
-                  child: _measure(p, t, entry.key, entry.value),
-                ),
+              Wrap(
+                spacing: 18,
+                children: [
+                  for (final entry in rows)
+                    SizedBox(
+                      width: w,
+                      child: _measure(p, t, entry.key, entry.value),
+                    ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              _supportLink(p, t),
             ],
           );
         },
@@ -1486,6 +1509,49 @@ class _EditorScreenState extends State<EditorScreen> {
         border: Border.all(color: p.ink, width: 2),
       ),
       child: Text('CONTRAST UNDER 4:1', style: t.label(8, color: _accentInk)),
+    );
+  }
+
+  Widget _supportStrip(Palette p, Type t, EdgeInsets margin) {
+    final dark = p == _dark;
+    return QrEncoderSupportStrip(
+      controller: _support,
+      dark: dark,
+      margin: margin,
+      style: qrEncoderSupportStyle(
+        ground: p.ground,
+        ink: p.ink,
+        muted: p.muted,
+        hair: p.hair,
+        accent: _accent,
+        dark: dark,
+        body: t.body(14),
+        label: t.label(12),
+        small: t.body(13),
+      ),
+    );
+  }
+
+  /// The permanent Support entry. It opens the checkout and changes nothing about the asking, so it still
+  /// works for someone who said "don't ask again".
+  Widget _supportLink(Palette p, Type t) {
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () => _support.openCheckout(dark: p == _dark),
+      child: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: Container(
+          constraints: const BoxConstraints(minHeight: 32),
+          alignment: Alignment.centerLeft,
+          child: Text(
+            'SUPPORT THE PROJECT',
+            style: t.label(8, color: p.muted).copyWith(
+              decoration: TextDecoration.underline,
+              decorationColor: p.muted,
+            ),
+          ),
+        ),
+      ),
     );
   }
 
@@ -1693,6 +1759,7 @@ class _EditorScreenState extends State<EditorScreen> {
     try {
       await _clipboardChannel.invokeMethod<void>('setPng', bytes);
       _say('copied · $_exportSide px${_capped ? ' · capped at $_maxExportSide' : ''}');
+      unawaited(_offerSupport());
     } on PlatformException {
       _say('clipboard unavailable');
     } on MissingPluginException {
@@ -1737,6 +1804,14 @@ class _EditorScreenState extends State<EditorScreen> {
     final path = saved.isScheme('file') ? saved.toFilePath() : null;
     setState(() => _savedPath = path);
     _say('saved · $_exportSide px${_capped ? ' · capped at $_maxExportSide' : ''}');
+    unawaited(_offerSupport());
+  }
+
+  /// An export is the moment of value: count it, and if the rules say it is time, show the strip above the
+  /// footer. Never over typing: any edit takes it away again.
+  Future<void> _offerSupport() async {
+    await _support.recordAction();
+    await _support.evaluate(momentOfValue: true);
   }
 }
 
