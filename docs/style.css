@@ -591,6 +591,8 @@ footer {
 .foot-left b { font-family: var(--pixel); font-size: 13px; color: var(--ink); letter-spacing: 0.12em; }
 
 .foot-right { display: flex; gap: 16px; align-items: center; }
+.foot-right a { color: var(--ink); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; padding: 14px 0; }
+.foot-right a:hover { background: var(--accent); color: var(--on-accent); text-decoration: none; }
 
 .accent-mark {
   width: 14px;
